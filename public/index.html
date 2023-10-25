@@ -4,11 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game of Life</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
   </head>
   <body>
-    <h3>Game of Life</h3>
-    <h4>Generation: <span id="generation"></span></h4>
+    <main>
+      <div id="header">
+        <h3>Game of Life</h3>
+        <h4>Generation: <span id="generation"></span></h4>
+        <div id="buttons">
+          <button id="stop" onClick="stopGame();">Stop</button>
+          <button id="start" onClick="startGame();">Start</button>
+          <button id="reset" onClick="setup();">Reset</button>
+          <button id="random" onClick="randomise();">Random</button>
+        </div>
+      </div>
+      <canvas id="canvas"></canvas>
+    </main>
 
     <script src="gameoflife.js"></script>
   </body>

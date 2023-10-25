@@ -5,10 +5,13 @@ const particles = [];
 const framerate = 10;
 let generation = 0;
 const span = document.getElementById("generation");
+const canvas = document.getElementById("canvas");
+const stopBtn = document.getElementById("stop");
 
 function setup() {
-  createCanvas(width, height);
+  createCanvas(width, height, canvas);
   background(200);
+  generation = 0;
 
   for (let i = 0; i < width / size; i++) {
     particles[i] = [];
@@ -18,6 +21,7 @@ function setup() {
       particles[i][j] = new Particle(x, y, size);
     }
   }
+  noLoop();
 }
 
 function draw() {
@@ -43,12 +47,49 @@ function draw() {
   }
 }
 
+function mousePressed() {
+  for (let i = 0; i < width / size; i++) {
+    for (let j = 0; j < height / size; j++) {
+      let particle = particles[i][j];
+      // console.log(mouseX, mouseY, particle);
+      // console.log("isSelected: ", particle.isSelected(mouseX, mouseY));
+      if (particle.isSelected(mouseX, mouseY)) {
+        particle.toggle();
+        particle.draw();
+      }
+    }
+  }
+  // redraw()
+
+  // return false;
+}
+
+function stopGame() {
+  noLoop();
+}
+
+function startGame() {
+  loop();
+}
+
+function randomise() {
+  for (let i = 0; i < width / size; i++) {
+    for (let j = 0; j < height / size; j++) {
+      let particle = particles[i][j];
+      
+      particle.random();
+      particle.draw();
+    }
+  }
+}
+
 class Particle {
   constructor(_x, _y, _size) {
     this.x = _x;
     this.y = _y;
     this.size = _size;
-    this.value = Math.floor(random(2));
+    // this.value = Math.floor(random(2));
+    this.value = 0;
     this.draw();
   }
 
@@ -70,6 +111,15 @@ class Particle {
     this.value = 0;
   }
 
+  toggle() {
+    console.log("toggle called");
+    this.value ? this.dead() : this.alive();
+  }
+
+  random() {
+    this.value = Math.floor(random(2));
+  }
+
   neighbours(particles, i, j) {
     let sum = 0;
 
@@ -84,5 +134,13 @@ class Particle {
 
     return sum;
   }
+
+  isSelected(x, y) {
+    return (
+      x > this.x &&
+      x < this.x + this.size &&
+      y > this.y &&
+      y < this.y + this.size
+    );
+  }
 }
-Ï
